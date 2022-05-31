@@ -1,0 +1,47 @@
+version: "3.9"
+services:
+  front:
+    image: iigor93/course7:front_end
+    #build:
+      #context: ./f_end
+    ports:
+    - "80:80"    
+    depends_on:
+      - api
+
+  api:
+    #build:
+      #context: .
+    image: iigor93/course7:v-0.1.0
+    ports:
+    - "8000:8000"
+    depends_on:
+      postgres_db:
+        condition: service_healthy
+      migrations:
+        condition: service_completed_successfully
+        
+  migrations:
+    #build:
+      #context: .
+    image: iigor93/course7:v-0.1.0
+    depends_on:
+      postgres_db:
+        condition: service_healthy
+    command: todolist/manage.py migrate
+     
+  postgres_db:
+    image: postgres:12.4-alpine
+    environment:
+      POSTGRES_PASSWORD: psql_password
+      POSTGRES_DB: django_course7
+    restart: always
+    ports:
+    - "5431:5432"
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5

@@ -12,7 +12,7 @@ services:
   api:
     #build:
       #context: .
-    image: iigor93/course7:v-0.1.0
+    image: iigor93/course7:$GITHUB_REF_NAME-$GITHUB_RUN_ID
     ports:
     - "8000:8000"
     depends_on:
@@ -20,21 +20,25 @@ services:
         condition: service_healthy
       migrations:
         condition: service_completed_successfully
+    volumes:
+      - ./env_folder:/code/todolist/todolist/env_folder
         
   migrations:
     #build:
       #context: .
-    image: iigor93/course7:v-0.1.0
+    image: iigor93/course7:$GITHUB_REF_NAME-$GITHUB_RUN_ID
     depends_on:
       postgres_db:
         condition: service_healthy
     command: todolist/manage.py migrate
+    volumes:
+      - ./env_folder:/code/todolist/todolist/env_folder
      
   postgres_db:
     image: postgres:12.4-alpine
     environment:
-      POSTGRES_PASSWORD: psql_password
-      POSTGRES_DB: django_course7
+      POSTGRES_PASSWORD: $DB_PASSWORD
+      POSTGRES_DB: $DB_NAME
     restart: always
     ports:
     - "5431:5432"

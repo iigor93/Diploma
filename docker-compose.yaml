@@ -37,9 +37,9 @@ services:
   postgres_db:
     image: postgres:12.4-alpine
     environment:
-      POSTGRES_PASSWORD: $DB_PASSWORD
-      POSTGRES_DB: $DB_NAME
-      POSTGRES_USER: $DB_USER
+      POSTGRES_PASSWORD: $DB_PASSWORD # psql_password 
+      POSTGRES_DB: $DB_NAME #django_course7 
+      POSTGRES_USER: $DB_USER  #postgres
     restart: always
     ports:
     - "5431:5432"

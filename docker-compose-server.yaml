@@ -11,9 +11,9 @@ services:
       - api
 
   api:
-    build:
-      context: .
-    #image: iigor93/course7:$GITHUB_REF_NAME-$GITHUB_RUN_ID
+    #build:
+      #context: .
+    image: iigor93/course7:$GITHUB_REF_NAME-$GITHUB_RUN_ID
     ports:
     - "8000:8000"
     depends_on:
@@ -22,27 +22,27 @@ services:
       migrations:
         condition: service_completed_successfully
     volumes:
-      - ./todolist:/code/todolist
-    #  - ./env_folder:/code/todolist/todolist/env_folder
+    #  - ./todolist:/code/todolist
+      - ./env_folder:/code/todolist/todolist/env_folder
         
   migrations:
-    build:
-      context: .
-    #image: iigor93/course7:$GITHUB_REF_NAME-$GITHUB_RUN_ID
+    #build:
+      #context: .
+    image: iigor93/course7:$GITHUB_REF_NAME-$GITHUB_RUN_ID
     depends_on:
       postgres_db:
         condition: service_healthy
     command: todolist/manage.py migrate
     volumes:
-      - ./todolist:/code/todolist
-    #  - ./env_folder:/code/todolist/todolist/env_folder
+    #  - ./todolist:/code/todolist
+      - ./env_folder:/code/todolist/todolist/env_folder
      
   postgres_db:
     image: postgres:12.4-alpine
     environment:
-      POSTGRES_PASSWORD:  psql_password #  $DB_PASSWORD  #  
-      POSTGRES_DB: django_course7 #   $DB_NAME #  
-      POSTGRES_USER: postgres #   $DB_USER #  
+      POSTGRES_PASSWORD:  $DB_PASSWORD # psql_password  #   
+      POSTGRES_DB:  $DB_NAME #  django_course7 #  
+      POSTGRES_USER:  $DB_USER #  postgres #  
     restart: always
     ports:
     - "5431:5432"

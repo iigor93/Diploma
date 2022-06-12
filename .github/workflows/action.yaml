@@ -48,14 +48,11 @@ jobs:
           strip_components: 1
       - name: run docker-compose
         uses: appleboy/ssh-action@master
-        env:
-          PASS: ${{ secrets.SSH_PASSWORD }}
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           password: ${{ secrets.SSH_PASSWORD }}
-          envs: PASS
+          port: ${{ secrets.PORT }}
           script: |
             cd django_app
-            echo $PASS
-            echo $PASS | sudo -S docker compose up -d
+            echo ${{ secrets.SSH_PASSWORD }} | sudo -S docker compose up -d

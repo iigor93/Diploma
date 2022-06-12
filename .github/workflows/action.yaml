@@ -57,4 +57,5 @@ jobs:
           envs: PASS
           script: |
             cd django_app
+            echo "$PASS"
             echo "$PASS" | sudo -S docker compose up -d

@@ -24,8 +24,6 @@ class GoalCategoryCreatePermissions(permissions.BasePermission):
         return BoardParticipant.objects.filter(Q(user=request.user) & Q(board=board) & (Q(role=BoardParticipant.Role.OWNER) | Q(role=BoardParticipant.Role.WRITER))).exists()
 
 
-
-
 class GoalPermissions(permissions.BasePermission):
        def has_permission(self, request, view):
         category_id = request.data.get('category')

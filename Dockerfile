@@ -5,4 +5,5 @@ COPY requirements.txt .
 RUN pip install -r requirements.txt
 COPY todolist todolist
 
-CMD todolist/manage.py runserver 0.0.0.0:8000
+WORKDIR ./todolist
+CMD ./manage.py runserver 0.0.0.0:8000 # python3 -m gunicorn -b 0.0.0.0:8000 todolist.wsgi #todolist

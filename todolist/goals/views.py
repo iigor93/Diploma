@@ -93,7 +93,8 @@ class GoalListView(generics.ListAPIView):
     ordering = ["title"]
     
     def get_queryset(self):
-        return Goal.objects.filter(category__board__participants__user=self.request.user, is_deleted=False)
+        return Goal.objects.select_related('category__board', 'user').filter(
+            category__board__participants__user=self.request.user, is_deleted=False)
 
 
 class GoalDetailView(generics.RetrieveUpdateDestroyAPIView):
@@ -112,7 +113,8 @@ class GoalDetailView(generics.RetrieveUpdateDestroyAPIView):
     ordering = ["title"]
 
     def get_queryset(self):
-        return Goal.objects.filter(category__board__participants__user=self.request.user, is_deleted=False)
+        return Goal.objects.select_related('category__board', 'user').filter(
+            category__board__participants__user=self.request.user, is_deleted=False)
     
     def perform_destroy(self, instance):
         instance.is_deleted = True
@@ -132,18 +134,19 @@ class GoalCommentListView(generics.ListAPIView):
     serializer_class = GoalCommentListSerializer
     filter_backends = [
         filters.OrderingFilter,
-        filters.SearchFilter,
         DjangoFilterBackend,
     ]
     
     filterset_fields = ['goal']
-    search_fields = ["text"]
+    
     
     ordering_fields = ["text", "created", 'updated']
     ordering = ["updated"]
     
     def get_queryset(self):
-        return GoalComment.objects.filter(user=self.request.user)
+        return GoalComment.objects.select_related('goal__category__board', 'user').filter(
+            goal__category__board__participants__user_id=self.request.user.id)
+        #return GoalComment.objects.filter(user=self.request.user)
 
 
 class GoalCommentDetailView(generics.RetrieveUpdateDestroyAPIView):
@@ -152,7 +155,9 @@ class GoalCommentDetailView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        return GoalComment.objects.filter(user=self.request.user)
+        return GoalComment.objects.select_related('goal__category__board', 'user').filter(
+            goal__category__board__participants__user_id=self.request.user.id)
+        #return GoalComment.objects.filter(user=self.request.user)
     
 
 

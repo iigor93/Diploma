@@ -32,7 +32,7 @@ services:
     depends_on:
       postgres_db:
         condition: service_healthy
-    command: todolist/manage.py migrate
+    command: ./manage.py migrate
     volumes:
       - ./todolist:/code/todolist
     #  - ./env_folder:/code/todolist/todolist/env_folder

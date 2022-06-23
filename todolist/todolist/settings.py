@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'django_filters',
     'core',
     'goals',
+    'bot',
 ]
 
 MIDDLEWARE = [
@@ -189,3 +190,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "django_media")
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'core.User'
+
+TG_BOT_TOKEN = os.environ.get("TG_BOT_TOKEN")

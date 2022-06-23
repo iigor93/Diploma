@@ -28,7 +28,7 @@ class UserCreate(generics.CreateAPIView):
     serializer_class = UserCreateSerializer
     
 
-#@method_decorator(ensure_csrf_cookie, name='dispatch')
+@method_decorator(ensure_csrf_cookie, name='dispatch')
 class UserLogin(APIView):
     
     def post(self, request):
@@ -46,7 +46,7 @@ class UserLogin(APIView):
 
 
 
-#@method_decorator(ensure_csrf_cookie, name='dispatch')
+@method_decorator(ensure_csrf_cookie, name='dispatch')
 class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserDetailSerializer
@@ -63,7 +63,7 @@ class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
         return JsonResponse({'message': 'logout'}, status=204)
 
 
-#@method_decorator(ensure_csrf_cookie, name='dispatch')
+@method_decorator(ensure_csrf_cookie, name='dispatch')
 class ChangePassword(generics.UpdateAPIView):
     queryset = User.objects.all()
     serializer_class = UserPasswordSerializer

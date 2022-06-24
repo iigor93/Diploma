@@ -76,7 +76,7 @@ class GoalCreateView(generics.CreateAPIView):
 
 class GoalListView(generics.ListAPIView):
     model = Goal
-    permission_classes = [permissions.IsAuthenticated, GoalPermissions]
+    permission_classes = [permissions.IsAuthenticated]
     serializer_class = GoalListSerializer
     filter_backends = [
         filters.OrderingFilter,

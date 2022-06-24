@@ -66,8 +66,6 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
-#SOCIAL_AUTH_AUTHENTICATION_BACKENDS = ('social_core.backends.vk.VKOAuth2',)
-
 
 SOCIAL_AUTH_JSONFIELD_ENABLED = True
 

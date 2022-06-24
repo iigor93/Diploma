@@ -19,8 +19,8 @@ class TgUser(models.Model):
     
     verification_code = models.CharField(max_length=10, verbose_name='Проверочный код')
     
-    condition = models.PositiveSmallIntegerField(verbose_name="состояние", choices=Conditions.choices, default=Conditions.BEGIN)
+    condition = models.PositiveSmallIntegerField(verbose_name="состояние",
+                                                 choices=Conditions.choices, default=Conditions.BEGIN)
     
     category = models.ForeignKey(GoalCategory, on_delete=models.PROTECT, related_name="tg_user", null=True)
     user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="tg_category", null=True)
-

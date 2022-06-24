@@ -19,4 +19,5 @@ class UserAdmin(admin.ModelAdmin):
     
     actions = [reset_password]
 
+
 admin.site.register(User, UserAdmin)

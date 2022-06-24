@@ -1,8 +1,7 @@
 from django.db import transaction
 from rest_framework import serializers
-from rest_framework.exceptions import ValidationError
-from goals.models import GoalCategory, Goal, GoalComment, Board, BoardParticipant
 
+from goals.models import GoalCategory, Goal, GoalComment, Board, BoardParticipant
 from core.serializers import UserDetailSerializer
 from core.models import User
 
@@ -25,7 +24,6 @@ class GoalCategoryListSerializer(serializers.ModelSerializer):
         read_only_fields = ("id", "created", "updated", "user")
     
 
-
 class GoalCreateSerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
     
@@ -40,6 +38,7 @@ class GoalCreateSerializer(serializers.ModelSerializer):
 
         return value
 
+
 class GoalListSerializer(serializers.ModelSerializer):
     user = UserDetailSerializer(read_only=True)
 
@@ -51,8 +50,7 @@ class GoalListSerializer(serializers.ModelSerializer):
 
 class GoalCommentCreateSerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
-    
-    
+
     class Meta:
         model = GoalComment
         read_only_fields = ['id', 'created', 'updated', 'user']
@@ -132,7 +130,6 @@ class BoardSerializer(serializers.ModelSerializer):
                         
                 for new_part in new_by_id.values():
                     BoardParticipant.objects.create(board=instance, user=new_part["user"], role=new_part["role"])
-                    
 
         instance.title = validated_data["title"]
         instance.save()

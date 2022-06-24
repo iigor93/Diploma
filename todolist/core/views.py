@@ -1,26 +1,15 @@
-import json
 from rest_framework import generics
 from rest_framework import serializers
-from rest_framework.response import Response
-from rest_framework import status
 from rest_framework.views import APIView
 
-
-#from django.core.exceptions import ValidationError
-from rest_framework.exceptions import ValidationError
-from rest_framework.response import Response
-
-from django.utils.translation import gettext as _, ngettext
 from django.contrib.auth import authenticate, login, logout
-from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
 
 from core.serializers import UserCreateSerializer, UserDetailSerializer, UserPasswordSerializer
 from core.models import User
-
 
 
 class UserCreate(generics.CreateAPIView):
@@ -32,7 +21,6 @@ class UserCreate(generics.CreateAPIView):
 class UserLogin(APIView):
     
     def post(self, request):
-        
         username = request.data['username']
         password = request.data['password']
         user = authenticate(username=username, password=password)
@@ -43,7 +31,6 @@ class UserLogin(APIView):
             return JsonResponse(serializer_.data, safe=False)
         else:
             raise serializers.ValidationError({'password': 'wrong old pass'})
-
 
 
 @method_decorator(ensure_csrf_cookie, name='dispatch')
@@ -74,4 +61,3 @@ class ChangePassword(generics.UpdateAPIView):
         obj = get_object_or_404(queryset, pk=user.pk)
         self.check_object_permissions(self.request, obj)
         return obj
-    

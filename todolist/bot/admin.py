@@ -1,3 +1,5 @@
 from django.contrib import admin
 
-# Register your models here.
+from bot import TgUser
+
+admin.site.register(TgUser)

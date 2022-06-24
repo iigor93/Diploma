@@ -1,9 +1,6 @@
 from dataclasses import dataclass, field
-from datetime import datetime
-
 import marshmallow
 import marshmallow_dataclass
-
 from typing import List, Optional
 
 
@@ -14,21 +11,21 @@ class BaseMeta:
 
 @dataclass
 class Chat(BaseMeta):
-     id: int 
-     first_name:  Optional[str]
-     last_name:  Optional[str]
-     
+    id: int
+    first_name: Optional[str]
+    last_name: Optional[str]
+
 
 @dataclass
 class From(BaseMeta):
     id: int
     is_bot: bool
-    
-    first_name:  Optional[str]
+
+    first_name: Optional[str]
     last_name: Optional[str]
     language_code: Optional[str]
     username: Optional[str]
-  
+
 
 @dataclass
 class Message(BaseMeta):
@@ -37,20 +34,19 @@ class Message(BaseMeta):
     chat: Chat
     date: int
     text: str
- 
-   
-@dataclass 
+
+
+@dataclass
 class Result(BaseMeta):
     update_id: int
     message: Message
-    
-   
+
 
 @dataclass
 class GetUpdatesResponse(BaseMeta):
     ok: bool
     result: List[Result] = field(default_factory=list)
-  
+
 
 @dataclass
 class SendMessageResult(BaseMeta):
@@ -59,13 +55,13 @@ class SendMessageResult(BaseMeta):
     text: str
     chat: Chat
     from_: From
-   
+
 
 @dataclass
 class SendMessageResponse(BaseMeta):
     ok: bool
     result: SendMessageResult
-    
+
 
 GetUpdatesResponseSchema = marshmallow_dataclass.class_schema(GetUpdatesResponse)()
 SendMessageResponseSchema = marshmallow_dataclass.class_schema(SendMessageResponse)()

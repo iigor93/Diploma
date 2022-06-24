@@ -64,10 +64,8 @@ class GoalCategoryDetailView(generics.RetrieveUpdateDestroyAPIView):
     def perform_destroy(self, instance):
         instance.is_deleted = True
         instance.save()
-        goals = instance.goal_set.all()
-        for goal in goals:
-            goal.is_deleted = True
-            goal.save()
+        Goal.objects.filter(category=instance).update(status=Status.ARCHIVED, is_deleted=True)
+        
         return instance
 
 
@@ -118,6 +116,7 @@ class GoalDetailView(generics.RetrieveUpdateDestroyAPIView):
     
     def perform_destroy(self, instance):
         instance.is_deleted = True
+        instance.status=Status.ARCHIVED
         instance.save()
         return instance
 
@@ -199,5 +198,5 @@ class BoardDetailView(generics.RetrieveUpdateDestroyAPIView):
             instance.is_deleted = True
             instance.save()
             instance.categories.update(is_deleted=True)
-            Goal.objects.filter(category__board=instance).update(status=Status.ARCHIVED)
+            Goal.objects.filter(category__board=instance).update(status=Status.ARCHIVED, is_deleted=True)
         return instance

@@ -2,6 +2,8 @@ from rest_framework import generics
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework import permissions
+from rest_framework.views import APIView
+
 
 from bot.models import TgUser
 from bot.serializers import CheckVerificationCodeSerializer
@@ -40,4 +42,7 @@ class CheckVerificationCode(generics.GenericAPIView):
         except ObjectDoesNotExist:
             raise ValidationError({'code': 'wrong code'})
         
-    
+
+class TgView(APIView):
+    def post(self, request, format=None):
+        return Response()

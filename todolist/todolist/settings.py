@@ -192,3 +192,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'core.User'
 
 TG_BOT_TOKEN = os.environ.get("TG_BOT_TOKEN")
+CSRF_TRUSTED_ORIGINS = ['https://idyakin.ga']

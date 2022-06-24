@@ -11,21 +11,21 @@ services:
       - api
 
   
-  tg_bot:
-    #build:
-      #context: .
-    image: iigor93/course7:$GITHUB_REF_NAME-$GITHUB_RUN_ID
-    ports:
-    - "8080:8000" 
-    depends_on:
-      postgres_db:
-        condition: service_healthy
-      migrations:
-        condition: service_completed_successfully
-    volumes:
-    #  - ./todolist:/code/todolist
-      - ./env_folder:/code/todolist/todolist/env_folder
-    command: ./manage.py runbot
+#  tg_bot:
+#    #build:
+#      #context: .
+#    image: iigor93/course7:$GITHUB_REF_NAME-$GITHUB_RUN_ID
+#    ports:
+#    - "8080:8000" 
+#    depends_on:
+#      postgres_db:
+#        condition: service_healthy
+#      migrations:
+#        condition: service_completed_successfully
+#    volumes:
+#    #  - ./todolist:/code/todolist
+#      - ./env_folder:/code/todolist/todolist/env_folder
+#    command: ./manage.py runbot
 
 
   api:

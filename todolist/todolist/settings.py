@@ -191,3 +191,6 @@ AUTH_USER_MODEL = 'core.User'
 
 TG_BOT_TOKEN = os.environ.get("TG_BOT_TOKEN")
 CSRF_TRUSTED_ORIGINS = ['https://idyakin.ga']
+
+REDIS_HOST = 'redis_server'
+REDIS_PORT = 6379

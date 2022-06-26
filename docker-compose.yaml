@@ -9,6 +9,16 @@ services:
     - "80:80"    
     depends_on:
       - api
+      
+  
+  redis_server:
+    image: redis:7.0.2-alpine
+    ports:
+    - "6380:6379"
+    
+    depends_on:
+      - api
+    
 
   
   tg_bot:

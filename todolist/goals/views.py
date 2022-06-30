@@ -12,7 +12,7 @@ from goals.serializers import GoalCategoryCreateSerializer, GoalCategoryListSeri
 from goals.filters import GoalDateFilter
 
 from goals.permissions import BoardPermissions, GoalCategoryCreatePermissions, \
-    GoalPermissions, GoalDetailPermissions, GoalCommentCreatePermissions
+    GoalPermissions, GoalDetailPermissions, GoalCommentCreatePermissions, GoalCommentPermissions, GoalCategoryDetailPermissions
 
 
 class GoalCategoryCreateView(generics.CreateAPIView):
@@ -43,7 +43,7 @@ class GoalCategoryListView(generics.ListAPIView):
 class GoalCategoryDetailView(generics.RetrieveUpdateDestroyAPIView):
     model = GoalCategory
     serializer_class = GoalCategoryListSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, GoalCategoryDetailPermissions]
 
     def get_queryset(self):
         return GoalCategory.objects.filter(board__participants__user=self.request.user, is_deleted=False)
@@ -52,7 +52,7 @@ class GoalCategoryDetailView(generics.RetrieveUpdateDestroyAPIView):
         instance = self.get_object()
         current_user = request.user
 
-        board_participant = BoardParticipant.objects.filter(user=current_user, board=instance.board).first()
+        board_participant = BoardParticipant.objects.filter(user=current_user, board=instance.board).get()
 
         if board_participant.role == BoardParticipant.Role.OWNER or \
                 board_participant.role == BoardParticipant.Role.WRITER:
@@ -61,11 +61,22 @@ class GoalCategoryDetailView(generics.RetrieveUpdateDestroyAPIView):
             raise ValidationError({'Permissions': 'No permissions for this action'})
 
     def perform_destroy(self, instance):
-        instance.is_deleted = True
-        instance.save()
-        Goal.objects.filter(category=instance).update(status=Status.ARCHIVED, is_deleted=True)
+        current_user = self.request.user
+        
+        board_participant = BoardParticipant.objects.filter(user=current_user, board=instance.board).get()
+        
+        if board_participant.role == BoardParticipant.Role.OWNER or \
+                board_participant.role == BoardParticipant.Role.WRITER:
+            instance.is_deleted = True
+            instance.save()
+            Goal.objects.filter(category=instance).update(status=Status.ARCHIVED, is_deleted=True)
 
-        return instance
+            return instance
+ 
+        else:
+            raise ValidationError({'Permissions': 'No permissions for this action'})
+        
+        
 
 
 class GoalCreateView(generics.CreateAPIView):
@@ -148,7 +159,7 @@ class GoalCommentListView(generics.ListAPIView):
 class GoalCommentDetailView(generics.RetrieveUpdateDestroyAPIView):
     model = GoalComment
     serializer_class = GoalCommentListSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, GoalCommentPermissions]
 
     def get_queryset(self):
         return GoalComment.objects.select_related('goal__category__board', 'user').filter(
@@ -163,7 +174,7 @@ class BoardCreateView(generics.CreateAPIView):
 
 class BoardListView(generics.ListAPIView):
     model = Board
-    permission_classes = [BoardPermissions]
+    permission_classes = [permissions.IsAuthenticated, BoardPermissions]
     serializer_class = BoardSerializer
 
     filter_backends = [

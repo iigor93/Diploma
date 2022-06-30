@@ -99,7 +99,7 @@ class Command(BaseCommand):
                     is_deleted=False)
 
                 if categories:
-                    self.redis_instance.set(user_condition, 'choose_category')
+                    self.redis_instance.set(user_condition, 'choose_category', ex=600)
                     return_text = ''
                     for category in categories:
                         return_text += (category.title + '\r\n')
@@ -122,8 +122,8 @@ class Command(BaseCommand):
 
                 for cat in categories:
                     if text == cat.title:
-                        self.redis_instance.set(user_condition, 'goal_create')
-                        self.redis_instance.set(user_category, cat.id)
+                        self.redis_instance.set(user_condition, 'goal_create', ex=600)
+                        self.redis_instance.set(user_category, cat.id, ex=600)
                         
                         return 'Enter goal title'
 

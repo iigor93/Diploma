@@ -27,6 +27,17 @@ class GoalCategoryCreatePermissions(permissions.BasePermission):
         return BoardParticipant.objects.filter(
             Q(user=request.user) & Q(board=board) &
             (Q(role=BoardParticipant.Role.OWNER) | Q(role=BoardParticipant.Role.WRITER))).exists()
+            
+class GoalCategoryDetailPermissions(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        if not request.user.is_authenticated:
+            return False
+        if request.method in permissions.SAFE_METHODS:
+            return BoardParticipant.objects.filter(Q(user=request.user) & Q(board=obj.board) ).exists()
+                            
+        return BoardParticipant.objects.filter(
+            Q(user=request.user) & Q(board=obj.board) &
+            (Q(role=BoardParticipant.Role.OWNER) | Q(role=BoardParticipant.Role.WRITER))).exists()
 
 
 class GoalPermissions(permissions.BasePermission):
@@ -60,4 +71,16 @@ class GoalCommentCreatePermissions(permissions.BasePermission):
         goal = get_object_or_404(Goal, pk=goal_id)
         return BoardParticipant.objects.filter(
             Q(user=request.user) & Q(board=goal.category.board) &
+            (Q(role=BoardParticipant.Role.OWNER) | Q(role=BoardParticipant.Role.WRITER))).exists()
+
+
+class GoalCommentPermissions(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        if not request.user.is_authenticated:
+            return False
+        if request.method in permissions.SAFE_METHODS:
+            return BoardParticipant.objects.filter(Q(user=request.user) & Q(board=obj.goal.category.board) ).exists()
+                            
+        return BoardParticipant.objects.filter(
+            Q(user=request.user) & Q(board=obj.goal.category.board) &
             (Q(role=BoardParticipant.Role.OWNER) | Q(role=BoardParticipant.Role.WRITER))).exists()

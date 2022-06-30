@@ -1,10 +1,8 @@
 version: "3.9"
 services:
   front:
-    image: sermalenk/skypro-front:lesson-38 # sermalenk/skypro-front:lesson-37 #sermalenk/skypro-front:lesson-36
-    #image: iigor93/course7:front_end
-    #build:
-      #context: ./f_end
+    image: sermalenk/skypro-front:lesson-38
+    
     ports:
     - "80:80"    
     depends_on:

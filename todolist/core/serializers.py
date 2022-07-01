@@ -4,6 +4,7 @@ from core.models import User
 
 
 class UserCreateSerializer(serializers.ModelSerializer):
+    """User create serializer"""
     default_error_messages = {"password_mismatch": 'Password mismatch'}
     password_repeat = serializers.CharField()
 
@@ -31,6 +32,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
         
 
 class UserDetailSerializer(serializers.ModelSerializer):
+    """User detail serializer"""
     class Meta:
         model = User
         read_only_fields = ['id']
@@ -38,6 +40,7 @@ class UserDetailSerializer(serializers.ModelSerializer):
 
 
 class UserPasswordSerializer(serializers.ModelSerializer):
+    """User password serializer"""
     default_error_messages = {"wrong_old_pass": 'Wrong old password'}
     new_password = serializers.CharField()
     old_password = serializers.CharField()

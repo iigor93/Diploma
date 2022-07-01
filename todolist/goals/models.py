@@ -4,6 +4,7 @@ from core.models import User
 
 
 class DatesModelMixin(models.Model):
+    """Base class"""
     class Meta:
         abstract = True
 
@@ -12,6 +13,7 @@ class DatesModelMixin(models.Model):
 
 
 class Status(models.IntegerChoices):
+    """status choises"""
     TO_DO = 1, "К выполнению"
     IN_PROGRESS = 2, "В процессе"
     DONE = 3, "Выполнено"
@@ -19,6 +21,7 @@ class Status(models.IntegerChoices):
 
 
 class Priority(models.IntegerChoices):
+    """priority choises"""
     LOW = 1, "Низкий"
     MEDIUM = 2, "Средний"
     HIGH = 3, "Высокий"
@@ -26,6 +29,7 @@ class Priority(models.IntegerChoices):
 
 
 class Board(DatesModelMixin):
+    """Board class"""
     class Meta:
         verbose_name = "Доска"
         verbose_name_plural = "Доски"
@@ -35,6 +39,7 @@ class Board(DatesModelMixin):
 
 
 class GoalCategory(DatesModelMixin):
+    """Category class"""
     class Meta:
         verbose_name = "Категория"
         verbose_name_plural = "Категории"
@@ -47,6 +52,7 @@ class GoalCategory(DatesModelMixin):
 
 
 class Goal(DatesModelMixin):
+    """Goal class"""
     class Meta:
         verbose_name = "Цель"
         verbose_name_plural = "Цели"
@@ -64,6 +70,7 @@ class Goal(DatesModelMixin):
 
 
 class GoalComment(DatesModelMixin):
+    """comment class"""
     class Meta:
         verbose_name = "Комментарий"
         verbose_name_plural = "Комментарии"
@@ -74,6 +81,7 @@ class GoalComment(DatesModelMixin):
 
 
 class BoardParticipant(DatesModelMixin):
+    """Board participant class"""
     class Meta:
         unique_together = ("board", "user")
         verbose_name = "Участник"

@@ -5,6 +5,7 @@ from typing import List, Optional
 
 
 class BaseMeta:
+    """Классы для ответов Телеграмм"""
     class Meta:
         unknown = marshmallow.EXCLUDE
 

@@ -1,10 +1,11 @@
 import pytest
 
-    
-    
+
 @pytest.fixture()
 @pytest.mark.django_db
 def get_token(client, django_user_model):
+    """get users and tokens"""
+
     username = 'igor_'
     password = 'igor_'
     is_staff = True

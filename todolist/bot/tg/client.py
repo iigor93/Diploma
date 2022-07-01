@@ -5,13 +5,14 @@ from bot.tg import dc
 
 
 class TgClient:
+    """Класс для приема и отправки сообщений в Телеграмм"""
     def __init__(self):
         self.token = settings.TG_BOT_TOKEN
 
     def get_url(self, method: str):
         return f"https://api.telegram.org/bot{self.token}/{method}"
 
-    def get_updates(self, offset: int = 0, timeout: int = 60) -> dc.GetUpdatesResponseSchema:
+    def get_updates(self, offset: int = 0, timeout: int = 60): 
         method = f'getUpdates?offset={offset}&timeout={timeout}'
         url = self.get_url(method=method)
         
@@ -22,7 +23,7 @@ class TgClient:
     
         return dc.GetUpdatesResponseSchema.load(data)
         
-    def send_message(self, chat_id: int, text: str) -> dc.SendMessageResponseSchema:
+    def send_message(self, chat_id: int, text: str): 
         method = f'sendMessage'
         url = self.get_url(method=method)
         message = {'chat_id': chat_id, 'text': text}

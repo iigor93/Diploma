@@ -6,6 +6,7 @@ from goals.models import Goal, GoalComment
 
 
 class GoalDateFilter(rest_framework.FilterSet):
+    """date goal filter"""
     class Meta:
         model = Goal
         fields = {

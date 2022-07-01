@@ -5,7 +5,6 @@ from rest_framework import generics
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework import permissions
-
 from django.core.exceptions import ObjectDoesNotExist
 
 from bot.models import TgUser
@@ -14,6 +13,7 @@ from bot.tg.client import TgClient
 
 
 class CheckVerificationCode(generics.GenericAPIView):
+    """Проверка кода и привязка пользователя Телеграмм и django"""
     model = TgUser
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = CheckVerificationCodeSerializer

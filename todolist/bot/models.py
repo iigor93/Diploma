@@ -1,11 +1,10 @@
 from django.db import models
 
 from core.models import User
-from goals.models import GoalCategory
 
 
 class TgUser(models.Model):
-    
+    """Класс пользователя Телеграмм, связь с пользователем django"""
     created = models.DateTimeField(verbose_name="Дата создания", auto_now_add=True)
     updated = models.DateTimeField(verbose_name="Дата последнего обновления", auto_now=True)
     

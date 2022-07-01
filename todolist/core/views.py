@@ -13,13 +13,14 @@ from core.models import User
 
 
 class UserCreate(generics.CreateAPIView):
+    """User create"""
     queryset = User.objects.all()
     serializer_class = UserCreateSerializer
     
 
 @method_decorator(ensure_csrf_cookie, name='dispatch')
 class UserLogin(APIView):
-    
+    """user login"""
     def post(self, request):
         username = request.data['username']
         password = request.data['password']
@@ -35,6 +36,7 @@ class UserLogin(APIView):
 
 @method_decorator(ensure_csrf_cookie, name='dispatch')
 class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
+    """User detail view"""
     queryset = User.objects.all()
     serializer_class = UserDetailSerializer
     
@@ -52,6 +54,7 @@ class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
 
 @method_decorator(ensure_csrf_cookie, name='dispatch')
 class ChangePassword(generics.UpdateAPIView):
+    """Change password"""
     queryset = User.objects.all()
     serializer_class = UserPasswordSerializer
     

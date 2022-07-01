@@ -16,12 +16,14 @@ from goals.permissions import BoardPermissions, GoalCategoryCreatePermissions, \
 
 
 class GoalCategoryCreateView(generics.CreateAPIView):
+    """Category create"""
     model = GoalCategory
     permission_classes = [permissions.IsAuthenticated, GoalCategoryCreatePermissions]
     serializer_class = GoalCategoryCreateSerializer
 
 
 class GoalCategoryListView(generics.ListAPIView):
+    """category list view"""
     model = GoalCategory
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = GoalCategoryListSerializer
@@ -41,6 +43,7 @@ class GoalCategoryListView(generics.ListAPIView):
 
 
 class GoalCategoryDetailView(generics.RetrieveUpdateDestroyAPIView):
+    """category detail view"""
     model = GoalCategory
     serializer_class = GoalCategoryListSerializer
     permission_classes = [permissions.IsAuthenticated, GoalCategoryDetailPermissions]
@@ -76,16 +79,16 @@ class GoalCategoryDetailView(generics.RetrieveUpdateDestroyAPIView):
         else:
             raise ValidationError({'Permissions': 'No permissions for this action'})
         
-        
-
 
 class GoalCreateView(generics.CreateAPIView):
+    """goal create view"""
     model = Goal
     permission_classes = [permissions.IsAuthenticated, GoalPermissions]
     serializer_class = GoalCreateSerializer
 
 
 class GoalListView(generics.ListAPIView):
+    """goal list view"""
     model = Goal
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = GoalListSerializer
@@ -106,6 +109,7 @@ class GoalListView(generics.ListAPIView):
 
 
 class GoalDetailView(generics.RetrieveUpdateDestroyAPIView):
+    """goal detail view"""
     model = Goal
     serializer_class = GoalListSerializer
     permission_classes = [permissions.IsAuthenticated, GoalDetailPermissions]
@@ -132,12 +136,14 @@ class GoalDetailView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class GoalCommentCreateView(generics.CreateAPIView):
+    """comment create"""
     model = GoalComment
     permission_classes = [permissions.IsAuthenticated, GoalCommentCreatePermissions]
     serializer_class = GoalCommentCreateSerializer
 
 
 class GoalCommentListView(generics.ListAPIView):
+    """comment list view"""
     model = GoalComment
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = GoalCommentListSerializer
@@ -157,6 +163,7 @@ class GoalCommentListView(generics.ListAPIView):
 
 
 class GoalCommentDetailView(generics.RetrieveUpdateDestroyAPIView):
+    """comment detail view"""
     model = GoalComment
     serializer_class = GoalCommentListSerializer
     permission_classes = [permissions.IsAuthenticated, GoalCommentPermissions]
@@ -167,12 +174,14 @@ class GoalCommentDetailView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class BoardCreateView(generics.CreateAPIView):
+    """board create"""
     model = Board
     permission_classes = [BoardPermissions]
     serializer_class = BoardCreateSerializer
 
 
 class BoardListView(generics.ListAPIView):
+    """board list view"""
     model = Board
     permission_classes = [permissions.IsAuthenticated, BoardPermissions]
     serializer_class = BoardSerializer
@@ -192,6 +201,7 @@ class BoardListView(generics.ListAPIView):
 
 
 class BoardDetailView(generics.RetrieveUpdateDestroyAPIView):
+    """board detail view"""
     model = Board
     permission_classes = [permissions.IsAuthenticated, BoardPermissions]
     serializer_class = BoardSerializer
@@ -203,6 +213,6 @@ class BoardDetailView(generics.RetrieveUpdateDestroyAPIView):
         with transaction.atomic():
             instance.is_deleted = True
             instance.save()
-            instance.categories.update(is_deleted=True)
+            instance.categories.update(is_deleted=True) # type: ignore 
             Goal.objects.filter(category__board=instance).update(status=Status.ARCHIVED, is_deleted=True)
         return instance

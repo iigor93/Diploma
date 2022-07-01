@@ -1,7 +1,6 @@
 import random
 import string
 from datetime import datetime
-
 import redis
 
 from django.conf import settings
@@ -19,9 +18,9 @@ class Command(BaseCommand):
     help = "Runs Telegram Bot"
     loaddata_command = "runbot"
     redis_instance = redis.Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=0, decode_responses=True)
-    
 
     def generate_alphanum_random_string(self):
+        """Генерация случайной строки"""
         letters_and_digits = string.ascii_letters + string.digits
         random_string = ''.join(random.sample(letters_and_digits, 4))
         
@@ -73,12 +72,12 @@ class Command(BaseCommand):
             return None
 
     def user_commands(self, text, current_user):
-        
+        """Комманды пользователя"""
         user_condition = str(current_user.user_tgid) + '_condition'
         user_category = str(current_user.user_tgid) + '_category'
         
         current_condition = self.redis_instance.get(user_condition)
-        if current_condition is None or current_condition == 'Nil':
+        if current_condition is None or current_condition == 'nil':
             if text == '/goal':
                 goals = Goal.objects.select_related('category__board', 'user').filter(
                     category__board__participants__user=current_user.user, is_deleted=False)

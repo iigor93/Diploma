@@ -6,6 +6,7 @@ from goals.models import BoardParticipant, Board, GoalCategory, Goal
 
 
 class BoardPermissions(permissions.BasePermission):
+    """Board permissions"""
     def has_object_permission(self, request, view, obj):
         if not request.user.is_authenticated:
             return False
@@ -21,14 +22,17 @@ class BoardPermissions(permissions.BasePermission):
 
 
 class GoalCategoryCreatePermissions(permissions.BasePermission):
+    """Category create permissions"""
     def has_permission(self, request, view):
         board_id = request.data.get('board')
         board = get_object_or_404(Board, pk=board_id)
         return BoardParticipant.objects.filter(
             Q(user=request.user) & Q(board=board) &
             (Q(role=BoardParticipant.Role.OWNER) | Q(role=BoardParticipant.Role.WRITER))).exists()
-            
+
+
 class GoalCategoryDetailPermissions(permissions.BasePermission):
+    """Category detail permissions"""
     def has_object_permission(self, request, view, obj):
         if not request.user.is_authenticated:
             return False
@@ -41,6 +45,7 @@ class GoalCategoryDetailPermissions(permissions.BasePermission):
 
 
 class GoalPermissions(permissions.BasePermission):
+    """Goal permission"""
     def has_permission(self, request, view):
         category_id = request.data.get('category')
         category = get_object_or_404(GoalCategory, pk=category_id)
@@ -54,6 +59,7 @@ class GoalPermissions(permissions.BasePermission):
 
 
 class GoalDetailPermissions(permissions.BasePermission):
+    """Goal detail permissions"""
     def has_object_permission(self, request, view, obj):
         if not request.user.is_authenticated:
             return False
@@ -66,6 +72,7 @@ class GoalDetailPermissions(permissions.BasePermission):
 
 
 class GoalCommentCreatePermissions(permissions.BasePermission):
+    """Comment create permissions"""
     def has_permission(self, request, view):
         goal_id = request.data.get('goal')
         goal = get_object_or_404(Goal, pk=goal_id)
@@ -75,6 +82,7 @@ class GoalCommentCreatePermissions(permissions.BasePermission):
 
 
 class GoalCommentPermissions(permissions.BasePermission):
+    """Comment permissions"""
     def has_object_permission(self, request, view, obj):
         if not request.user.is_authenticated:
             return False

@@ -1,15 +1,15 @@
-from rest_framework import generics
-from rest_framework import serializers
-from rest_framework.views import APIView
+from core.models import User
+from core.serializers import UserCreateSerializer, UserDetailSerializer, UserPasswordSerializer
 
 from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
-from django.views.decorators.csrf import ensure_csrf_cookie
 from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import ensure_csrf_cookie
 
-from core.serializers import UserCreateSerializer, UserDetailSerializer, UserPasswordSerializer
-from core.models import User
+from rest_framework import generics
+from rest_framework import serializers
+from rest_framework.views import APIView
 
 
 class UserCreate(generics.CreateAPIView):

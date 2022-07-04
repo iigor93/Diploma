@@ -1,7 +1,9 @@
+from core import views
+
 from django.urls import path
+
 from rest_framework.authtoken import views as rest_views
 
-from core import views
 
 urlpatterns = [
     path('signup', views.UserCreate.as_view(), name='signup'),

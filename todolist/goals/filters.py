@@ -1,8 +1,9 @@
-import django_filters
 from django.db import models
+
+import django_filters
 from django_filters import rest_framework
 
-from goals.models import Goal, GoalComment
+from goals.models import Goal
 
 
 class GoalDateFilter(rest_framework.FilterSet):

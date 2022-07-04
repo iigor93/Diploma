@@ -1,7 +1,9 @@
 from dataclasses import dataclass, field
-import marshmallow
-import marshmallow_dataclass
 from typing import List, Optional
+
+import marshmallow
+
+import marshmallow_dataclass
 
 
 class BaseMeta:

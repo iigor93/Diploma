@@ -1,9 +1,12 @@
-import factory
 from datetime import datetime
-from pytest_factoryboy import register
 
 from django.utils import timezone
-from goals.models import Board, GoalCategory, Goal, GoalComment
+
+import factory
+
+from goals.models import Board, Goal, GoalCategory, GoalComment
+
+from pytest_factoryboy import register
 
 
 pytest_plugins = "tests.fixtures"

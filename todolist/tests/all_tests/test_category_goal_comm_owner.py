@@ -1,18 +1,19 @@
-import pytest
-import json
 from datetime import datetime
 
 from django.utils import timezone
+
 from goals.models import BoardParticipant
+
+import pytest
 
 
 @pytest.mark.django_db
 def test_category_crud_owner(client, get_token, board_factory):
     token = 'Token ' + get_token[1]
     current_user = get_token[0]
-    
+
     board = board_factory()
-    board_participant = BoardParticipant.objects.create(user=current_user, board=board, role=BoardParticipant.Role.OWNER)
+    board_participant = BoardParticipant.objects.create(user=current_user, board=board, role=BoardParticipant.Role.OWNER) # noqa F841
     
     data = {'title': 'test_category_title', 'user': current_user, 'board': board.id}
     
@@ -24,7 +25,7 @@ def test_category_crud_owner(client, get_token, board_factory):
     update_data = {'title': 'updated_title'}
     update_request = client.patch(f"/goals/goal_category/{pk}",
                                   content_type='application/json',
-                                  data=update_data, 
+                                  data=update_data,
                                   HTTP_AUTHORIZATION=token)
                                   
     delete_request = client.delete(f'/goals/goal_category/{pk}', HTTP_AUTHORIZATION=token)
@@ -47,7 +48,7 @@ def test_goal_crud_owner(client, get_token, board_factory, category_factory):
     current_user = get_token[0]
     
     board = board_factory()
-    board_participant = BoardParticipant.objects.create(user=current_user, board=board, role=BoardParticipant.Role.OWNER)
+    board_participant = BoardParticipant.objects.create(user=current_user, board=board, role=BoardParticipant.Role.OWNER)  # noqa F841
     category = category_factory(user=current_user, board=board)
     
     data = {'title': 'test_goal_title', 
@@ -87,7 +88,7 @@ def test_comment_crud_owner(client, get_token, board_factory, category_factory, 
     current_user = get_token[0]
     
     board = board_factory()
-    board_participant = BoardParticipant.objects.create(user=current_user, board=board, role=BoardParticipant.Role.OWNER)
+    board_participant = BoardParticipant.objects.create(user=current_user, board=board, role=BoardParticipant.Role.OWNER)  # noqa F841
     category = category_factory(user=current_user, board=board)
     goal = goal_factory(user=current_user, category=category)
     

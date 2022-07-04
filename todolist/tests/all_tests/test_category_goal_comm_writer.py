@@ -1,9 +1,10 @@
-import pytest
-import json
 from datetime import datetime
 
 from django.utils import timezone
+
 from goals.models import BoardParticipant
+
+import pytest
 
 
 @pytest.mark.django_db
@@ -12,7 +13,9 @@ def test_category_crud_owner(client, get_token, board_factory):
     current_user = get_token[0]
     
     board = board_factory()
-    board_participant = BoardParticipant.objects.create(user=current_user, board=board, role=BoardParticipant.Role.WRITER)
+    board_participant = BoardParticipant.objects.create(user=current_user,   # noqa F841
+                                                        board=board,
+                                                        role=BoardParticipant.Role.WRITER)
     
     data = {'title': 'test_category_title', 'user': current_user, 'board': board.id}
     
@@ -47,7 +50,9 @@ def test_goal_crud_owner(client, get_token, board_factory, category_factory):
     current_user = get_token[0]
     
     board = board_factory()
-    board_participant = BoardParticipant.objects.create(user=current_user, board=board, role=BoardParticipant.Role.WRITER)
+    board_participant = BoardParticipant.objects.create(user=current_user,  # noqa F841
+                                                        board=board,
+                                                        role=BoardParticipant.Role.WRITER)
     category = category_factory(user=current_user, board=board)
     
     data = {'title': 'test_goal_title', 
@@ -87,7 +92,9 @@ def test_comment_crud_owner(client, get_token, board_factory, category_factory, 
     current_user = get_token[0]
     
     board = board_factory()
-    board_participant = BoardParticipant.objects.create(user=current_user, board=board, role=BoardParticipant.Role.WRITER)
+    board_participant = BoardParticipant.objects.create(user=current_user,  # noqa F841
+                                                        board=board,
+                                                        role=BoardParticipant.Role.WRITER)
     category = category_factory(user=current_user, board=board)
     goal = goal_factory(user=current_user, category=category)
     

@@ -1,6 +1,6 @@
-import pytest
-
 from goals.models import BoardParticipant
+
+import pytest
 
 
 @pytest.mark.django_db
@@ -25,7 +25,7 @@ def test_board_list(client, get_token, board_factory):
     boards = board_factory.create_batch(size=data_len, title='test_title')
     
     for board in boards:
-        board_participant = BoardParticipant.objects.create(user=get_token[0], board=board)
+        board_participant = BoardParticipant.objects.create(user=get_token[0], board=board)  # noqa F841
         
     response = client.get('/goals/board/list', format='json', HTTP_AUTHORIZATION='Token ' + get_token[1])
     
@@ -33,5 +33,4 @@ def test_board_list(client, get_token, board_factory):
     assert len(response.data) == data_len
     
     for item in response.data:
-        assert item.get('title') =='test_title'
-
+        assert item.get('title') == 'test_title'

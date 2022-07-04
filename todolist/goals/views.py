@@ -1,18 +1,20 @@
-from rest_framework import generics
-from rest_framework import permissions
-from rest_framework import filters
-from rest_framework.exceptions import ValidationError
 from django.db import transaction
+
 from django_filters.rest_framework import DjangoFilterBackend
 
-from goals.models import GoalCategory, Goal, GoalComment, Board, BoardParticipant, Status
-from goals.serializers import GoalCategoryCreateSerializer, GoalCategoryListSerializer, \
-    GoalCreateSerializer, GoalListSerializer, GoalCommentCreateSerializer, \
-    GoalCommentListSerializer, BoardCreateSerializer, BoardListSerializer, BoardSerializer
 from goals.filters import GoalDateFilter
+from goals.models import Board, BoardParticipant, Goal, GoalCategory, GoalComment, Status
+from goals.permissions import (BoardPermissions, GoalCategoryCreatePermissions,
+                               GoalCategoryDetailPermissions, GoalCommentCreatePermissions,
+                               GoalCommentPermissions, GoalDetailPermissions, GoalPermissions,)
+from goals.serializers import (BoardCreateSerializer, BoardSerializer, GoalCategoryCreateSerializer,
+                               GoalCategoryListSerializer, GoalCommentCreateSerializer,
+                               GoalCommentListSerializer, GoalCreateSerializer, GoalListSerializer)
 
-from goals.permissions import BoardPermissions, GoalCategoryCreatePermissions, \
-    GoalPermissions, GoalDetailPermissions, GoalCommentCreatePermissions, GoalCommentPermissions, GoalCategoryDetailPermissions
+from rest_framework import filters
+from rest_framework import generics
+from rest_framework import permissions
+from rest_framework.exceptions import ValidationError
 
 
 class GoalCategoryCreateView(generics.CreateAPIView):
@@ -57,8 +59,7 @@ class GoalCategoryDetailView(generics.RetrieveUpdateDestroyAPIView):
 
         board_participant = BoardParticipant.objects.filter(user=current_user, board=instance.board).get()
 
-        if board_participant.role == BoardParticipant.Role.OWNER or \
-                board_participant.role == BoardParticipant.Role.WRITER:
+        if board_participant.role in (BoardParticipant.Role.OWNER, BoardParticipant.Role.WRITER):
             return super().update(request, *args, **kwargs)
         else:
             raise ValidationError({'Permissions': 'No permissions for this action'})
@@ -68,8 +69,7 @@ class GoalCategoryDetailView(generics.RetrieveUpdateDestroyAPIView):
         
         board_participant = BoardParticipant.objects.filter(user=current_user, board=instance.board).get()
         
-        if board_participant.role == BoardParticipant.Role.OWNER or \
-                board_participant.role == BoardParticipant.Role.WRITER:
+        if board_participant.role in (BoardParticipant.Role.OWNER, BoardParticipant.Role.WRITER):
             instance.is_deleted = True
             instance.save()
             Goal.objects.filter(category=instance).update(status=Status.ARCHIVED, is_deleted=True)
@@ -213,6 +213,6 @@ class BoardDetailView(generics.RetrieveUpdateDestroyAPIView):
         with transaction.atomic():
             instance.is_deleted = True
             instance.save()
-            instance.categories.update(is_deleted=True) # type: ignore 
+            instance.categories.update(is_deleted=True)  # type: ignore
             Goal.objects.filter(category__board=instance).update(status=Status.ARCHIVED, is_deleted=True)
         return instance

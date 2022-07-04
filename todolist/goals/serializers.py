@@ -1,9 +1,12 @@
-from django.db import transaction
-from rest_framework import serializers
-
-from goals.models import GoalCategory, Goal, GoalComment, Board, BoardParticipant
-from core.serializers import UserDetailSerializer
 from core.models import User
+from core.serializers import UserDetailSerializer
+
+from django.db import IntegrityError
+from django.db import transaction
+
+from goals.models import Board, BoardParticipant, Goal, GoalCategory, GoalComment
+
+from rest_framework import serializers
 
 
 class GoalCategoryCreateSerializer(serializers.ModelSerializer):
@@ -129,7 +132,10 @@ class BoardSerializer(serializers.ModelSerializer):
                         new_by_id.pop(old_participant.user_id)
                         
                 for new_part in new_by_id.values():
-                    BoardParticipant.objects.create(board=instance, user=new_part["user"], role=new_part["role"])
+                    try:
+                        BoardParticipant.objects.create(board=instance, user=new_part["user"], role=new_part["role"])
+                    except IntegrityError:
+                        continue
 
         instance.title = validated_data["title"]
         instance.save()

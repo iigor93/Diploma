@@ -1,8 +1,10 @@
-import pytest
 from datetime import datetime
+
 from django.utils import timezone
 
 from goals.models import BoardParticipant
+
+import pytest
 
 
 @pytest.mark.django_db
@@ -14,8 +16,12 @@ def test_category_crud_reader(client, get_token, board_factory):
     owner_user = get_token[2]
     
     board = board_factory()
-    board_participant = BoardParticipant.objects.create(user=current_user, board=board, role=BoardParticipant.Role.READER)
-    board_participant = BoardParticipant.objects.create(user=owner_user, board=board, role=BoardParticipant.Role.OWNER)
+    board_participant = BoardParticipant.objects.create(user=current_user,  # noqa F841
+                                                        board=board,
+                                                        role=BoardParticipant.Role.READER)
+    board_participant = BoardParticipant.objects.create(user=owner_user,  # noqa F841
+                                                        board=board,
+                                                        role=BoardParticipant.Role.OWNER)
     
     data = {'title': 'test_category_title', 'user': owner_user, 'board': board.id}
     reader_data = {'title': 'test_category_title', 'user': current_user, 'board': board.id}
@@ -53,24 +59,26 @@ def test_goal_crud_reader(client, get_token, board_factory, category_factory):
     owner_user = get_token[2]
     
     board = board_factory()
-    board_participant = BoardParticipant.objects.create(user=current_user, board=board, role=BoardParticipant.Role.READER)
-    board_participant = BoardParticipant.objects.create(user=owner_user, board=board, role=BoardParticipant.Role.OWNER)
+    board_participant = BoardParticipant.objects.create(user=current_user,  # noqa F841
+                                                        board=board,
+                                                        role=BoardParticipant.Role.READER)
+    board_participant = BoardParticipant.objects.create(user=owner_user,  # noqa F841
+                                                        board=board,
+                                                        role=BoardParticipant.Role.OWNER)
     category = category_factory(user=owner_user, board=board)
-    
-    
+
     data = {'title': 'test_goal_title', 
             'user': owner_user, 
             'category': category.id,
             'description': 'some description',
             'due_date': datetime.now(tz=timezone.utc)}
     
-    reader_data = {'title': 'test_goal_title', 
-            'user': current_user, 
-            'category': category.id,
-            'description': 'some description',
-            'due_date': datetime.now(tz=timezone.utc)}
-    
-    
+    reader_data = {'title': 'test_goal_title',  # noqa F841
+                   'user': current_user,
+                   'category': category.id,
+                   'description': 'some description',
+                   'due_date': datetime.now(tz=timezone.utc)}
+
     create_request = client.post('/goals/goal/create', data=data, HTTP_AUTHORIZATION=token)
     owner_request = client.post('/goals/goal/create', data=data, HTTP_AUTHORIZATION=owner_token)
     
@@ -95,7 +103,6 @@ def test_goal_crud_reader(client, get_token, board_factory, category_factory):
     assert delete_request.status_code == 403
 
 
-  
 @pytest.mark.django_db
 def test_comment_crud_reader(client, get_token, board_factory, category_factory, goal_factory):
     token = 'Token ' + get_token[1]
@@ -105,8 +112,12 @@ def test_comment_crud_reader(client, get_token, board_factory, category_factory,
     owner_user = get_token[2]
     
     board = board_factory()
-    board_participant = BoardParticipant.objects.create(user=current_user, board=board, role=BoardParticipant.Role.READER)
-    board_participant = BoardParticipant.objects.create(user=owner_user, board=board, role=BoardParticipant.Role.OWNER)
+    board_participant = BoardParticipant.objects.create(user=current_user,  # noqa F841
+                                                        board=board,
+                                                        role=BoardParticipant.Role.READER)
+    board_participant = BoardParticipant.objects.create(user=owner_user,  # noqa F841
+                                                        board=board,
+                                                        role=BoardParticipant.Role.OWNER)
     category = category_factory(user=owner_user, board=board)
     goal = goal_factory(user=owner_user, category=category)
     
@@ -114,9 +125,9 @@ def test_comment_crud_reader(client, get_token, board_factory, category_factory,
             'user': current_user, 
             'goal': goal.id}
             
-    owner_data = {'text': 'test_text_comment', 
-            'user': owner_user, 
-            'goal': goal.id}
+    owner_data = {'text': 'test_text_comment', # noqa F841
+                  'user': owner_user,
+                  'goal': goal.id}
     
     create_request = client.post('/goals/goal_comment/create', data=data, HTTP_AUTHORIZATION=token)
     owner_request = client.post('/goals/goal_comment/create', data=data, HTTP_AUTHORIZATION=owner_token)

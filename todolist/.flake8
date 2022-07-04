@@ -1,0 +1,11 @@
+[flake8]
+
+ignore =
+  W293,
+  E501,
+  W291
+
+exclude =
+  migrations,
+  settings.py
+  settings_test.py

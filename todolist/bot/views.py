@@ -1,15 +1,16 @@
-import redis
-
-from django.conf import settings
-from rest_framework import generics
-from rest_framework.exceptions import ValidationError
-from rest_framework.response import Response
-from rest_framework import permissions
-from django.core.exceptions import ObjectDoesNotExist
-
 from bot.models import TgUser
 from bot.serializers import CheckVerificationCodeSerializer
 from bot.tg.client import TgClient
+
+from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist
+
+import redis
+
+from rest_framework import generics
+from rest_framework import permissions
+from rest_framework.exceptions import ValidationError
+from rest_framework.response import Response
 
 
 class CheckVerificationCode(generics.GenericAPIView):

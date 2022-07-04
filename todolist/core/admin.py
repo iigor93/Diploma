@@ -1,9 +1,9 @@
-from django.contrib import admin
-from django.db import models
 from core.models import User
 
+from django.contrib import admin
 
-@admin.action(description=f'Reset password for default')
+
+@admin.action(description='Reset password for default')
 def reset_password(modeladmin, request, queryset):
     for user_ in queryset:
         user_.set_password(user_.default_password)

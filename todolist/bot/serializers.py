@@ -1,5 +1,6 @@
-from rest_framework import serializers
 from bot.models import TgUser
+
+from rest_framework import serializers
 
 
 class CheckVerificationCodeSerializer(serializers.ModelSerializer):
